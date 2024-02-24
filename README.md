@@ -1,13 +1,8 @@
 # KimeraCS
-This is the C# version of the original and amazing utility from Borde called Kimera (done in Visual Basic 6 and OpenGL) useful for modding models of Final Fantasy VII. I have in my repository his original tool and you can find it also at:
-https://github.com/tsunamods-codes/kimera
 
-This tool has been developed in C#, and the tool needs at least .NET Framework 4.7.2 runtime. The OpenGL calls are native methods, so, there is no need of other framework or library to run it.
+A continuation of the original [KimeraCS made by LaZar00](https://github.com/LaZar00/KimeraCS).
 
-This version of Kimera has the same features as the Borde's one plus some new (look the readme.txt at \doc folder) and tried to be implemented for modern languages.
-
-You can report any issue you find if you wish and I will try to solve. I'm not open to new feature requests or pull requests tough.
-
-Enjoy this tool.
-
-![imagen](https://user-images.githubusercontent.com/46090031/162592748-35039977-8113-4198-bf41-fce8afa24f1b.png)
+On top of the original release this one contains:
+- Code has been rebased to work on top .NET 8 LTS
+- CI job to automatically build the latest code status
+- Minor code re-organisations to make it easier to contribute
