@@ -53,11 +53,12 @@ namespace KimeraCS
     using static OpenGL32;
     using static User32;
     using static GDI32;
+    using System.Reflection;
 
     public partial class FrmSkeletonEditor : Form
     {
 
-        public const string STR_APPNAME = "KimeraCS 1.8z";
+        public string STR_APPNAME = $"{Assembly.GetExecutingAssembly().GetName().Name} v{Assembly.GetExecutingAssembly().GetName().Version}";
 
         public static int modelWidth;
         public static int modelHeight;
