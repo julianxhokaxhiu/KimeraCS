@@ -2452,7 +2452,7 @@ namespace KimeraCS
                 {
                     hRC = wglCreateContext(hDC);
 
-                    if (hRC == null)
+                    if (hRC == IntPtr.Zero)
                     {
                         MessageBox.Show("Can't create OpenGL context (wglCreateContext)!");
                     }

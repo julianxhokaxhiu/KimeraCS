@@ -506,7 +506,7 @@ namespace KimeraCS
             do
             {
                 hDC = CreateCompatibleDC(hDCIn);
-            } while (hDC == null);
+            } while (hDC == IntPtr.Zero);
 
             // -- Commented in KimeraVB6
             //if (hDC != null)
