@@ -29,7 +29,7 @@ F2				->	Open TMD Object List if we have closed (Hide) it
 F				->  Enable/Disable Face Normals
 V				->  Enable/Disable Vertex Normals
 Mouse Left		->	Open Texture Coordinates (UVs) Viewer (Texture Picturebox)
-Double-click	
+Double-click
 
 == PEditor only
 +/-			->	More/Less Brightness of the colors
@@ -79,6 +79,6 @@ Green background = Panning (Middle Mouse button)
 
 * New Polygon
 You need to pick 3 vertex to create new polygon. There is a counter in the button.
-You can reset the counter of the vertices picked with "N" key 
-(while button "New polygon" is pushed). This feature is also in KimeraVB6, 
+You can reset the counter of the vertices picked with "N" key
+(while button "New polygon" is pushed). This feature is also in KimeraVB6,
 except the picked vertices counter.
