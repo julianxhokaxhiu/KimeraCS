@@ -24,10 +24,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include="KimeraCS.ico" />
-    <Content Include="resources\checkbox.png" />
-    <Content Include="resources\checkbox_unchecked.png" />
-    <Content Include="resources\hand.cur" />
-    <Content Include="resources\handplus.cur" />
+    <Content Include="Resources\checkbox.png" />
+    <Content Include="Resources\checkbox_unchecked.png" />
+    <Content Include="Resources\hand.cur" />
+    <Content Include="Resources\handplus.cur" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Core\" />
   </ItemGroup>
   <Target Name="KimeraCSAfterBuild" AfterTargets="AfterBuild">
     <Copy SourceFiles="../misc/ifalna.fil" DestinationFolder="$(OutputPath)" ContinueOnError="false" />
