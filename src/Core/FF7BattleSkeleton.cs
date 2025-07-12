@@ -26,6 +26,7 @@ namespace KimeraCS
     using static Utils;
     using static GDI32;
     using static FileTools;
+    using KimeraCS.PSX;
 
     public class FF7BattleSkeleton
     {
@@ -315,6 +316,47 @@ namespace KimeraCS
                 }
             }
 
+            public BattleSkeleton(PSXBattleModel psxModel)
+            {
+                skeletonType = 2; // PC Battle Model
+                IsBattleLocation = false;
+                CanHaveLimitBreak = true;
+                // Defaults?
+                unk1 = unk2 = 1;
+                unk3 = unk5 = 0;
+
+                // Bones
+                bones = new List<BattleBone>();
+                nBones = 1;
+                nJoints = 0;
+                for (int i = 0; i < psxModel.BoneData.Bones.Length; i++)
+                {
+                    var bone = new BattleBone();
+
+                    if (psxModel.BoneData.Bones[i].Offset == 0)
+                        nJoints++;
+                    else
+                        nBones++;
+
+                    bone.parentBone = psxModel.BoneData.Bones[i].Parent;
+                    bone.len = psxModel.BoneData.Bones[i].Length;
+
+                    bone.hasModel = Convert.ToInt32(psxModel.BoneData.Bones.Length > 0);
+                    var model = new PModel();
+                    // TODO
+                }
+
+                // Textures
+                textures = new List<TEX>();
+                nTextures = 1;
+
+                // Weapons
+                wpModels = new List<PModel>();
+                nWeapons = psxModel.WeaponData.Bones.Length;
+
+                // Animations
+                nsSkeletonAnims = psxModel.AnimationData.Frames.Length;
+            }
         }
 
 

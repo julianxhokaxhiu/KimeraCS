@@ -2041,7 +2041,7 @@ namespace KimeraCS
 
             // Set filter options and filter index.
             openFile.Title = "Load Battle/Magic Skeleton";
-            openFile.Filter = "Battle/Magic Skeleton|*AA;*.D|All files|*.*";
+            openFile.Filter = "PC/PSX Battle/Magic Skeleton|*AA;*.D;*.LZS|All files|*.*";
             openFile.FilterIndex = 1;
             openFile.FileName = null;
 

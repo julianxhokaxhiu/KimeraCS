@@ -60,7 +60,7 @@ namespace KimeraCS
             public List<BattleAnimation> WeaponAnimations;
             public bool IsLimit;
 
-            public BattleAnimationsPack(BattleSkeleton bSkeleton, string strFileName)
+            public BattleAnimationsPack(BattleSkeleton bSkeleton, string strFileName = "")
             {
                 string strBattleAnimPackFileName;
                 string strAnimsPackFullFileName;                             

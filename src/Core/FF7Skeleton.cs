@@ -1,37 +1,31 @@
 ﻿using System;
-using System.Windows.Forms;
-using System.IO;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace KimeraCS
 {
     
     using Defines;
-
-    using static FrmSkeletonEditor;
-
-    using static FF7FieldSkeleton;
-    using static FF7FieldAnimation;
-
-    using static FF7BattleSkeleton;
-    using static FF7BattleAnimationsPack;
+    using KimeraCS.PSX;
     using static FF7BattleAnimation;
-
+    using static FF7BattleAnimationsPack;
+    using static FF7BattleSkeleton;
+    using static FF7FieldAnimation;
     using static FF7FieldRSDResource;
+    using static FF7FieldSkeleton;
     using static FF7PModel;
-    using static FF7TMDModel;
-
     using static FF7TEXTexture;
-
-    using static Lighting;
-
-    using static OpenGL32;
-    using static GDI32;
-    using static Utils;
+    using static FF7TMDModel;
     using static FileTools;
+    using static FrmSkeletonEditor;
+    using static GDI32;
+    using static Lighting;
+    using static OpenGL32;
+    using static Utils;
 
 
     public static class FF7Skeleton
@@ -53,6 +47,7 @@ namespace KimeraCS
         public const int K_AA_SKELETON = 4;
         public const int K_MAGIC_SKELETON = 5;
         public const int K_3DS_MODEL = 6;
+        public const int K_PSX_BATTLE_MODEL = 7;
 
         public static int modelType = -1;
 
@@ -86,65 +81,71 @@ namespace KimeraCS
             {
 
                 // First we destroy the previous loaded Field Skeleton.
-                if (bLoaded && (modelType >= K_HRC_SKELETON && modelType <= K_MAGIC_SKELETON))
+                if (bLoaded && ((modelType >= K_HRC_SKELETON && modelType <= K_MAGIC_SKELETON) || modelType == K_PSX_BATTLE_MODEL))
                 {
                     if (DestroySkeleton() != 1) iloadSkeletonResult = -2;
                 }
 
                 modelType = GetSkeletonType(strFileName);
 
-                if (modelType >= K_HRC_SKELETON && modelType <= K_MAGIC_SKELETON)
+                // LOAD Skeleton
+                // We load the Field Skeleton into memory.
+                switch (modelType)
                 {
-                    // LOAD Skeleton
-                    // We load the Field Skeleton into memory.
-                    switch (modelType)
-                    {
-                        case K_HRC_SKELETON:
-                            string strAnimationName = "";
+                    case K_HRC_SKELETON:
+                        string strAnimationName = "";
 
-                            // Field Skeleton (.hrc)
-                            fSkeleton = new FieldSkeleton(strFileName, loadGeometryQ);
+                        // Field Skeleton (.hrc)
+                        fSkeleton = new FieldSkeleton(strFileName, loadGeometryQ);
 
-                            // We try to find some compatible Field Animation for the Field Skeleton.
-                            // If there is no compatible field animation we have this var:   strGlobalFieldAnimationName = ""
-                            iloadSkeletonResult = SearchFirstCompatibleFieldAnimationFileName(fSkeleton, 
-                                                                                              Path.GetDirectoryName(strFileName), 
-                                                                                              ref strAnimationName);
+                        // We try to find some compatible Field Animation for the Field Skeleton.
+                        // If there is no compatible field animation we have this var:   strGlobalFieldAnimationName = ""
+                        iloadSkeletonResult = SearchFirstCompatibleFieldAnimationFileName(fSkeleton, 
+                                                                                            Path.GetDirectoryName(strFileName), 
+                                                                                            ref strAnimationName);
 
-                            if (iloadSkeletonResult == 1)
-                                fAnimation = new FieldAnimation(fSkeleton,
-                                                                Path.GetDirectoryName(strFileName) + "\\" + strAnimationName, 
-                                                                strAnimationName != "DUMMY.A");
+                        if (iloadSkeletonResult == 1)
+                            fAnimation = new FieldAnimation(fSkeleton,
+                                                            Path.GetDirectoryName(strFileName) + "\\" + strAnimationName, 
+                                                            strAnimationName != "DUMMY.A");
 
-                            break;
+                        break;
 
-                        case K_AA_SKELETON:
-                            // Battle Skeleton (aa)
-                            bSkeleton = new BattleSkeleton(strFileName, CanHaveLimitBreak(Path.GetFileNameWithoutExtension(strFileName).ToUpper()), true);
+                    case K_AA_SKELETON:
+                        // Battle Skeleton (aa)
+                        bSkeleton = new BattleSkeleton(strFileName, CanHaveLimitBreak(Path.GetFileNameWithoutExtension(strFileName).ToUpper()), true);
 
-                            // Normally we will have the ??DA file with the Animation Pack.
-                            // Location Battle Models has NOT ??DA file.
-                            // But editing models, it is possible we work without it. So, we will make something
-                            // similiar as we did with Field Models, but we will check if ??DA file for the model exists.
-                            bAnimationsPack = new BattleAnimationsPack(bSkeleton, strFileName);
+                        // Normally we will have the ??DA file with the Animation Pack.
+                        // Location Battle Models has NOT ??DA file.
+                        // But editing models, it is possible we work without it. So, we will make something
+                        // similiar as we did with Field Models, but we will check if ??DA file for the model exists.
+                        bAnimationsPack = new BattleAnimationsPack(bSkeleton, strFileName);
 
-                            break;
+                        break;
 
-                        case K_MAGIC_SKELETON:
-                            // Magic Skeleton (.d)
-                            bSkeleton = new BattleSkeleton(strFileName, true);
+                    case K_MAGIC_SKELETON:
+                        // Magic Skeleton (.d)
+                        bSkeleton = new BattleSkeleton(strFileName, true);
 
-                            // Normally we will have the *.A00 file with the Animation Pack.
-                            // But editing models, it is possible we work without it. So, we will make something
-                            // similiar as we did with Field Models, but we will check if *.A00 file for the model exists.
-                            bAnimationsPack = new BattleAnimationsPack(bSkeleton, strFileName);
+                        // Normally we will have the *.A00 file with the Animation Pack.
+                        // But editing models, it is possible we work without it. So, we will make something
+                        // similiar as we did with Field Models, but we will check if *.A00 file for the model exists.
+                        bAnimationsPack = new BattleAnimationsPack(bSkeleton, strFileName);
 
-                            break;
-                    }
-                }
-                else
-                {
-                    iloadSkeletonResult = 0;  // No known skeleton
+                        break;
+
+                    case K_PSX_BATTLE_MODEL:
+                        var psxBattleData = new PSXBattleData(strFileName);
+
+                        bSkeleton = new BattleSkeleton(psxBattleData.ModelData);
+                        bAnimationsPack = new BattleAnimationsPack(bSkeleton);
+
+                        break;
+
+                    default:
+                        iloadSkeletonResult = 0;  // No known skeleton
+
+                        break;
                 }
             }
             catch (Exception ex)
@@ -371,6 +372,14 @@ namespace KimeraCS
 
                         strGlobalMagicSkeletonName = Path.GetFileNameWithoutExtension(strFileName).ToUpper();
                         strGlobalMagicSkeletonFileName = Path.GetFileName(strFileName).ToUpper();
+
+                        break;
+
+                    case ".LZS":
+                        iSkeletonType = K_PSX_BATTLE_MODEL;
+
+                        strGlobalBattleSkeletonName = Path.GetFileNameWithoutExtension(strFileName).ToUpper();
+                        strGlobalBattleSkeletonFileName = Path.GetFileName(strFileName).ToUpper();
 
                         break;
                 }
