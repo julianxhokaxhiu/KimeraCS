@@ -86,14 +86,14 @@ namespace KimeraCS
             {
 
                 // First we destroy the previous loaded Field Skeleton.
-                if (bLoaded && (modelType >= 3 && modelType <= 5))
+                if (bLoaded && (modelType >= K_HRC_SKELETON && modelType <= K_MAGIC_SKELETON))
                 {
                     if (DestroySkeleton() != 1) iloadSkeletonResult = -2;
                 }
 
                 modelType = GetSkeletonType(strFileName);
 
-                if (modelType >= 3 && modelType <= 5)
+                if (modelType >= K_HRC_SKELETON && modelType <= K_MAGIC_SKELETON)
                 {
                     // LOAD Skeleton
                     // We load the Field Skeleton into memory.
@@ -345,7 +345,7 @@ namespace KimeraCS
                 switch (Path.GetExtension(strFileName).ToUpper())
                 {
                     case ".HRC":
-                        iSkeletonType = 3;
+                        iSkeletonType = K_HRC_SKELETON;
 
                         strGlobalFieldSkeletonName = Path.GetFileNameWithoutExtension(strFileName).ToUpper();
                         strGlobalFieldSkeletonFileName = Path.GetFileName(strFileName).ToUpper();
@@ -361,13 +361,13 @@ namespace KimeraCS
                                 strGlobalBattleSkeletonName = Path.GetFileNameWithoutExtension(strFileName).ToUpper();
                                 strGlobalBattleSkeletonFileName = Path.GetFileName(strFileName).ToUpper();
 
-                                iSkeletonType = 4;
+                                iSkeletonType = K_AA_SKELETON;
                             }
                         }
                         break;
 
                     case ".D":
-                        iSkeletonType = 5;
+                        iSkeletonType = K_MAGIC_SKELETON;
 
                         strGlobalMagicSkeletonName = Path.GetFileNameWithoutExtension(strFileName).ToUpper();
                         strGlobalMagicSkeletonFileName = Path.GetFileName(strFileName).ToUpper();
